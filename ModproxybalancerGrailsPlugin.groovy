@@ -11,8 +11,8 @@ class ModproxybalancerGrailsPlugin {
     ]
 
     // TODO Fill in these fields
-    def author = "Stefan Armbruster, Davide "
-    def authorEmail = "stefan@armbruster-it.dem "
+    def author = "Stefan Armbruster, Davide Rossi"
+    def authorEmail = "stefan@armbruster-it.de, drossi@byte-code.com "
     def title = "Manage an Apache mod_proxy_balancer LoadBalancer during a clusterwide application redeployment"
     def description = '''
 This plugin assumes you have an Apache mod_proxy_balancer running in front of multiple tomcat instances in order to

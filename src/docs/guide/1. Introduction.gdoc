@@ -1,0 +1,28 @@
+This plugin's goal is to simplify the deployment of a grails application to a cluster consisting of multiple tomcat instances
+and an Apache httpd mod_proxy_balancer.
+
+It assumes you have an [Apache mod_proxy_balancer|http://httpd.apache.org/docs/2.1/mod/mod_proxy_balancer.html] running in front of multiple tomcat instances in order to
+provide a) high-availability and b) load-balancing to your Grails application. In such a scenario, upgrading the running
+application to a newer release is painful. This plugin's goal is to simplify that procedure by performing a
+"rolling upgrade". Calling 'grails tomcat redeploy' performs these actions:
+
+# take first node offline in loadbalancer
+# undeploy app on first tomcat node
+# deploy app on first tomcat node
+# check if app responds on first tomcat node
+# take first node online in loadbalancer
+# proceed the same procedure with next node
+
+Since Grails 1.3.2 the tomcat plugin is capable of
+# deploying to multiple hosts and
+# emitting lifecycle events: PreDeploy, PostDeploy, PreUndeploy, PostUndeploy
+
+By catching up these events it is simple possible to remote control the loadbalancer. mod_proxy_balancer comes with a
+simple management frontend called balancer-manager. This consists of some simple HTML forms that can be easily
+triggered using htmlunit.
+
+This plugin was invented on the Hackergarden event at gr8conf 2010 in Copenhagen and finished the weekend afterwards.
+Thanks to Canoo for sponsoring pizza and drinks.
+
+The plugin is licensend under the [WTFPL|http://sam.zoy.org/wtfpl/].
+

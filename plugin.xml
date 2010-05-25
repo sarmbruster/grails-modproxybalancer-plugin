@@ -1,6 +1,6 @@
 <plugin name='modproxybalancer' version='0.1' grailsVersion='1.3.1 &gt; *'>
-  <author>Stefan Armbruster, Davide </author>
-  <authorEmail>stefan@armbruster-it.dem </authorEmail>
+  <author>Stefan Armbruster, Davide Rossi</author>
+  <authorEmail>stefan@armbruster-it.de, drossi@byte-code.com </authorEmail>
   <title>Manage an Apache mod_proxy_balancer LoadBalancer during a clusterwide application redeployment</title>
   <description>
 This plugin assumes you have an Apache mod_proxy_balancer running in front of multiple tomcat instances in order to
@@ -29,8 +29,6 @@ Thanks to Canoo for sponsoring pizza and drinks.
   <documentation>http://grails.org/plugin/modproxybalancer</documentation>
   <resources>
     <resource>BuildConfig</resource>
-    <resource>DataSource</resource>
-    <resource>UrlMappings</resource>
   </resources>
   <dependencies />
   <behavior />
