@@ -2,3 +2,4 @@ grails-modproxybalancer-*.zip
 *.iws
 target/
 web-app
+plugin.xml
