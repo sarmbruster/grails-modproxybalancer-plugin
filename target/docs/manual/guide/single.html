@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>modproxybalancer 0.1 - Reference Documentation</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Style" charset="utf-8"/>
+        <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
+    </head>
+    <body class="body">
+        <div id="header">
+            <div class="images"><br/><br/>
+                <a href="http://grails.org" target="_blank"><img alt="The Grails Framework" src="../img/grails.png" border="0"/></a>
+                <span style="right:30px; top:20px; position:absolute;">
+                    <a href="../index.html" target="_top">Frames</a> | <a href="index.html" target="_top">No Frames</a><br/><br/>
+                    <a href="http://springsource.com" target="_blank"><img alt="SpringSource - A Division of VMware" src="../img/springsource-logo.png" border="0"/></a>
+                </span>
+            </div>
+            <div class="message">modproxybalancer</div>
+            <h1>modproxybalancer - Reference Documentation</h1>
+            <p><strong>Authors:</strong> </p>
+            <p><strong>Version:</strong> 0.1</p>
+            <em></em>
+        </div>
+
+        <div id="toc">
+            <h2>Table of Contents</h2>
+            <div class="tocItem" style="margin-left:0px"><a href="#1. Introduction">1. Introduction</a></div><div class="tocItem" style="margin-left:0px"><a href="#2. Usage">2. Usage</a></div>
+        </div>
+        <div id="content">
+            <h1><a name="1. Introduction">1. Introduction</a></h1>This plugin's goal is to simplify the deployment of a grails application to a cluster consisting of multiple tomcat instances
+and an Apache httpd mod_proxy_balancer.<p class="paragraph"/>It assumes you have an <a href="http://httpd.apache.org/docs/2.1/mod/mod_proxy_balancer.html" target="blank">Apache mod_proxy_balancer</a> running in front of multiple tomcat instances in order to
+provide a) high-availability and b) load-balancing to your Grails application. In such a scenario, upgrading the running
+application to a newer release is painful. This plugin's goal is to simplify that procedure by performing a
+"rolling upgrade". Calling 'grails tomcat redeploy' performs these actions:
+<ol>
+<li>take first node offline in loadbalancer</li>
+<li>undeploy app on first tomcat node</li>
+<li>deploy app on first tomcat node</li>
+<li>check if app responds on first tomcat node</li>
+<li>take first node online in loadbalancer</li>
+<li>proceed the same procedure with next node</li>
+</ol><p class="paragraph"/>Since Grails 1.3.2 the tomcat plugin is capable of
+<ol>
+<li>deploying to multiple hosts and</li>
+<li>emitting lifecycle events: PreDeploy, PostDeploy, PreUndeploy, PostUndeploy</li>
+</ol><p class="paragraph"/>By catching up these events it is simple possible to remote control the loadbalancer. mod_proxy_balancer comes with a
+simple management frontend called balancer-manager. This consists of some simple HTML forms that can be easily
+triggered using htmlunit.<p class="paragraph"/>This plugin was invented on the Hackergarden event at gr8conf 2010 in Copenhagen and finished the weekend afterwards.
+Thanks to Canoo for sponsoring pizza and drinks.<p class="paragraph"/>The plugin is licensend under the <a href="http://sam.zoy.org/wtfpl/" target="blank">WTFPL</a>.<p class="paragraph"/><h1><a name="2. Usage">2. Usage</a></h1><h2>Installation</h2>
+Installation is done like every other plugin:
+<div class="code"><pre>grails install&#45;plugin modproxybalancer</pre></div><p class="paragraph"/><blockquote class="warning">Warning 1: The modproxybalancer plugin will only work, if a tomcat plugin &#62;= 1.3.2.BUILD-SNAPSHOT is installed.
+So use also <div class="code"><pre>grails install tomcat 1.3.2.BUILD&#45;SNAPSHOT</pre></div>
+</blockquote><p class="paragraph"/><blockquote class="warning">Warning 2: At the time of the initial release, the tomcat plugin (1.3.2.BUILD-SNAPTSHOT) does not contain the necessary
+changes to work with modproxybalancer plugin. Therefore you have to compile it yourself. The sources are available on
+git://github.com/sarmbruster/grails-modproxybalancer-plugin.git.
+</blockquote><p class="paragraph"/><h2>Configuration in your application</h2><p class="paragraph"/>The following configuration elements should be included in your {{grails-app/conf/Config.groovy}}
+<div class="code"><pre>tomcat.deploy = &#91;
+   username : 'manager',
+   password : 'manager'  ,
+   url : &#91;'http://localhost:8080/manager', 'http://localhost:8081/manager'&#93;,
+   balancerUrl: <span class="java&#45;quote">"http://localhost/balancer&#45;manager"</span>,
+   balancerMapping: &#91;'ajp://localhost:8009', 'ajp://localhost:8010'&#93;
+&#93;</pre></div><p class="paragraph"/>The config option have the semantics:
+<ul class="star">
+<li>tomcat.deploy.username: username used for tomcat's manager</li>
+<li>tomcat.deploy.password: password used for tomcat's manager</li>
+<li>tomcat.deploy.url: list of tomcat's manager URLs.</li>
+<li>tomcat.deploy.balancerUrl: URL of the mod_proxy_balancer's balancer-manager frontend</li>
+<li>tomcat.deploy.balancerMapping: holds a list with ajp URL for each tomcat in the same order like tomcat.deploy.url</li>
+</ul><p class="paragraph"/><h2>Using the plugin</h2>
+Just run
+<div class="code"><pre>grails tomcat redeploy</pre></div>
+        </div>
+        <div id="footer">
+             
+        </div>
+    </body>
+</html>

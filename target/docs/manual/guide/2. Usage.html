@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>2. Usage</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    <h1><a name="2. Usage">2. Usage</a></h1><h2>Installation</h2>
+Installation is done like every other plugin:
+<div class="code"><pre>grails install&#45;plugin modproxybalancer</pre></div><p class="paragraph"/><blockquote class="warning">Warning 1: The modproxybalancer plugin will only work, if a tomcat plugin &#62;= 1.3.2.BUILD-SNAPSHOT is installed.
+So use also <div class="code"><pre>grails install tomcat 1.3.2.BUILD&#45;SNAPSHOT</pre></div>
+</blockquote><p class="paragraph"/><blockquote class="warning">Warning 2: At the time of the initial release, the tomcat plugin (1.3.2.BUILD-SNAPTSHOT) does not contain the necessary
+changes to work with modproxybalancer plugin. Therefore you have to compile it yourself. The sources are available on
+git://github.com/sarmbruster/grails-modproxybalancer-plugin.git.
+</blockquote><p class="paragraph"/><h2>Configuration in your application</h2><p class="paragraph"/>The following configuration elements should be included in your {{grails-app/conf/Config.groovy}}
+<div class="code"><pre>tomcat.deploy = &#91;
+   username : 'manager',
+   password : 'manager'  ,
+   url : &#91;'http://localhost:8080/manager', 'http://localhost:8081/manager'&#93;,
+   balancerUrl: <span class="java&#45;quote">"http://localhost/balancer&#45;manager"</span>,
+   balancerMapping: &#91;'ajp://localhost:8009', 'ajp://localhost:8010'&#93;
+&#93;</pre></div><p class="paragraph"/>The config option have the semantics:
+<ul class="star">
+<li>tomcat.deploy.username: username used for tomcat's manager</li>
+<li>tomcat.deploy.password: password used for tomcat's manager</li>
+<li>tomcat.deploy.url: list of tomcat's manager URLs.</li>
+<li>tomcat.deploy.balancerUrl: URL of the mod_proxy_balancer's balancer-manager frontend</li>
+<li>tomcat.deploy.balancerMapping: holds a list with ajp URL for each tomcat in the same order like tomcat.deploy.url</li>
+</ul><p class="paragraph"/><h2>Using the plugin</h2>
+Just run
+<div class="code"><pre>grails tomcat redeploy</pre></div>
+    </body>
+</html>
